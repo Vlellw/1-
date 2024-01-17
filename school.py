@@ -156,6 +156,3 @@ if __name__ == "__main__":
     b3 = Caesar_cipher()
     print(b3.encryption())
     print(b3.decryption())
-
-
-
