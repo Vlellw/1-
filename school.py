@@ -37,10 +37,9 @@ class Vigenère_cipher:
 
     def encode_val(self, word):
         list_code = []
-        lent = len(word)
         d = self.form_dict()
 
-        for w in range(lent):
+        for w in range(len(word)):
             for value in d:
                 if word[w] == d[value]:
                     list_code.append(value)
