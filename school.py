@@ -108,8 +108,6 @@ class Polybius_square:
         for x in fraze:
             if x in self.hard_dictionary:
                 new_txt += self.hard_dictionary.get(x)
-            else:
-                new_txt += (x + x)
         return new_txt
 
     def decode(self, fraze):
