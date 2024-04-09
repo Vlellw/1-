@@ -1,54 +1,103 @@
-f = open('26 (2).txt')	# считывание входных данных
-maxsum = int(f.readline().replace('\n','').split(' ')[1])
-l = f.readlines()
-f.close()
+def insertion_sort(arr):
+	for i in range(1, len(arr)):
+		key = arr[i]
+		j = i-1
+		while j >=0 and key < arr[j]:
+			arr[j+1] = arr[j]
+			j -= 1
+			arr[j+1] = key
+	return arr
 
-ll = []
-for i in l:
-	ii = i.replace('\n','').split(' ')
-	ii[0] = int(ii[0])
-	ll.append(ii)
 
-# создаём отдельные массивы для изделий a и b, и сортируем все 3 массива
-alist = [k[0] for k in ll if k[1] == 'A']
-blist = [k[0] for k in ll if k[1] == 'B']
+def selection_sort(lst):
+	n = len(lst)
+	i = 0
+	while i < n - 1:
+		smallest = i
+		j = i + 1
+		while j < n:
+			if lst[j] < lst[smallest]:
+				smallest = j  # находим наименьшее число
+			j += 1
+		lst[i], lst[smallest] = lst[smallest], lst[i]  # меняем местами, наименьшее "вначало"
+		i += 1
+	return lst
 
-alist.sort()
-blist.sort()
-ll.sort(key=lambda k: k[0])
-# считаем максимальное количество изделий
-msum = 0
-maxc = 0
 
-for i in ll:
-	if msum + i[0] <= maxsum:
-		msum += i[0]
-		maxc += 1
+def bubble_sort(a):
+	N = len(a)
+	for i in range(N - 1):
+		for j in range(N - 1 - i):
+			if a[j] > a[j + 1]:
+				a[j], a[j + 1] = a[j + 1], a[j]
+	return a
+
+
+def merge_sort(alist, start, end):
+	if end - start > 1:
+		mid = (start + end) // 2
+		merge_sort(alist, start, mid)
+		merge_sort(alist, mid, end)
+		merge_list(alist, start, mid, end)
+	return alist
+def merge_list(alist, start, mid, end):
+	left = alist[start:mid]
+	right = alist[mid:end]
+	k = start
+	i = 0
+	j = 0
+	while (start + i < mid and mid + j < end):
+		if (left[i] <= right[j]):
+			alist[k] = left[i]
+			i = i + 1
+		else:
+			alist[k] = right[j]
+			j = j + 1
+		k = k + 1
+	if start + i < mid:
+		while k < end:
+			alist[k] = left[i]
+			i = i + 1
+			k = k + 1
 	else:
-		break
-# "закупаем" максимальное количество изделий A
-ba = []
-for i in alist:
-	if len(ba) >= maxc:
-		break
-	if sum(ba) + i <= maxsum:
-		ba.append(i)
-	else:
-		break
+		while k < end:
+			alist[k] = right[j]
+			j = j + 1
+			k = k + 1
 
-# докупаем изделия B, при необходимости удаляя изделия A, пока не доберём до максимального значения
-bb = []
 
-for i in blist:
-	if len(ba) + len(bb) >= maxc:
-		break
-	if sum(ba) + sum(bb) + i <= maxsum:
-		bb.append(i)
-	else:
-		while sum(ba) + sum(bb) + i > maxsum:
-			del ba[-1]
-		bb.append(i)
+def quicksort(alist, start, end):
+	if end - start > 1:
+		p = partition(alist, start, end)
+		quicksort(alist, start, p)
+		quicksort(alist, p + 1, end)
+	return alist
+def partition(alist, start, end):
+	pivot = alist[start]
+	i = start + 1
+	j = end - 1
 
-# вывод ответа
-print(len(ba))
-print(maxsum - (sum(ba) + sum(bb)))
+	while True:
+		while (i <= j and alist[i] <= pivot):
+			i = i + 1
+		while (i <= j and alist[j] >= pivot):
+			j = j - 1
+
+		if i <= j:
+			alist[i], alist[j] = alist[j], alist[i]
+		else:
+			alist[start], alist[j] = alist[j], alist[start]
+			return j
+
+
+w1 = [1, 57, 5, 17, 7, 3, 9, 8, 10, 10]
+
+mer_sort = merge_sort(w1, 0, len(w1))
+
+qui_sort = quicksort(w1, 0, len(w1))
+
+bub_sort = bubble_sort(w1)
+
+sel_sort = selection_sort(w1)
+
+ins_sort = insertion_sort(w1)
