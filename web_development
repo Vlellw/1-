@@ -23,8 +23,7 @@ def index():
             images = [f"data:image/{image_type};base64,{image_data}"]
             return render_template('index.html', images=images)
 
-        return render_template('index.html', images=None, error='Недопустимый файл. Пожалуйста, загрузите изображение в формате PNG, JPG, JPEG или GIF.')
-
+        return render_template('index.html', images=None, error='Недопустимый файл.') 
     return render_template('index.html', images=None)
 
 if __name__ == '__main__':
