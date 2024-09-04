@@ -1,18 +1,15 @@
 from flask import Flask, render_template, request
-import os
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'static/uploads/'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 # Допустимые расширения файлов
-w1 = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-def test_file(filename):
-    s1 = filename.lower().split('.')[-1]  
-    return s1 in w1
+# Проверка допустимости файла по его расширению
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Маршрут для главной страницы
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -21,11 +18,10 @@ def index():
 
         file = request.files['file']
 
-        if file and test_file(file.filename):
-            filename = file.filename  
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(filepath)
-            images = [filepath]
+        if file and allowed_file(file.filename):
+            # Получаем URL файла без сохранения на диск
+            image_data = file.read()
+            images = [f"data:image/{file.filename.rsplit('.', 1)[1].lower()};base64," + image_data.encode('base64').decode('utf-8')]
             return render_template('index.html', images=images)
 
         return render_template('index.html', images=None, error='Недопустимый файл. Пожалуйста, загрузите изображение в формате PNG, JPG, JPEG или GIF.')
