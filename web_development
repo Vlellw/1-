@@ -1,41 +1,66 @@
-from flask import Flask, render_template, request
-import os
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request  
+import os  
+from werkzeug.utils import secure_filename  
 
 app = Flask(__name__)
 
-# Указываем папку для хранения загруженных изображений
-UPLOAD_FOLDER = 'static/uploads/'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Разрешенные расширения файлов
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = 'static/uploads/'  
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER  
+
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}  # Список расширений изображений, которые поддерживаются для загрузки
+
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    """
+    Функция проверяет, соответствует ли файл допустимому формату по его расширению.
+    Возвращает True, если файл допустим, и False, если нет.
+    """
+    
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/', methods=['GET', 'POST'])  # Эта строка указывает, что функция index() будет вызываться при переходе на корневую страницу и поддерживает методы GET и POST
 def index():
+    """
+    Эта функция обрабатывает запросы на главную страницу.
+    Если запрос является POST (пользователь отправил форму), обрабатывается загруженный файл.
+    Если запрос является GET (пользователь просто открыл страницу), отображается пустая форма.
+    """
+    
     if request.method == 'POST':
-        # Проверяем, что файл присутствует в запросе
-        if 'file' not in request.files:
-            return render_template('index.html', images=None, error='Нет файла для загрузки')
         
-        file = request.files['file']
+        if 'file' not in request.files:  # Если в запросе отсутствует файл (ключ 'file'), возвращаем страницу с сообщением об ошибке
+            return render_template('index.html', images=None, error='Нет файла для загрузки. Пожалуйста, выберите файл.')
 
-        # Проверяем, что файл имеет допустимое расширение и не пустой
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(filepath)
+        
+        file = request.files['file']  # Получаем файл, который пользователь загрузил через форму
+
+        
+        if file and allowed_file(file.filename):  # Если файл существует и его расширение допустимо
+            # Получаем безопасное имя файла, чтобы избежать проблем с вредоносными именами
+            filename = secure_filename(file.filename)  # Используем secure_filename, чтобы избежать проблем с небезопасными символами в имени файла
+
             
-            images = [filepath]
-            return render_template('index.html', images=images)
-        
-        return render_template('index.html', images=None, error='Недопустимый файл')
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)  # Создаем полный путь к файлу, включая папку для загрузки и его имя
 
+            
+            file.save(filepath)  # 
+
+            # Подготовка данных для отображения загруженного изображения на веб-странице
+            images = [filepath]  # Создаем список с путями к загруженным изображениям для отображения на странице
+
+            # Возвращаем HTML-шаблон с загруженными изображениями для их отображения пользователю
+            return render_template('index.html', images=images)
+
+        # Если файл не прошел проверку, возвращаем страницу с сообщением об ошибке
+        return render_template('index.html', images=None, error='Недопустимый файл. Пожалуйста, загрузите изображение в формате PNG, JPG, JPEG или GIF.')
+
+    # Если пользователь просто открыл страницу, отображаем форму для загрузки файла
     return render_template('index.html', images=None)
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    
+    app.run(debug=True)  
