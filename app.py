@@ -203,7 +203,7 @@ class FilterWindow(QWidget):
         self.main_window = main_window  # Ссылка на главное окно для передачи фильтров
 
         # Настройка окна фильтров
-        self.setWindowTitle("Filter Recipes")
+        self.setWindowTitle("Filter Recipe")
         self.setGeometry(300, 300, 700, 400)
         self.setStyleSheet("background-color: #2E8B57;")
 
@@ -214,17 +214,17 @@ class FilterWindow(QWidget):
         # Радиокнопка для фильтрации по сахару
 
 
-        self.sugar_filter = QCheckBox("No sugar", self)
+        self.sugar_filter = QCheckBox("Без сахара", self)
         self.sugar_filter.setGeometry(QRect(350, 50, 300, 50))  # Координаты и размер
         self.sugar_filter.setStyleSheet("font-size: 30px; "
                                         "font-family: 'Times New Roman';")
 
-        self.alcohol_filter = QCheckBox("No alcohol", self)
+        self.alcohol_filter = QCheckBox("Без алкоголя", self)
         self.alcohol_filter.setGeometry(QRect(350, 110, 300, 50))  # Координаты и размер
         self.alcohol_filter.setStyleSheet("font-size: 30px; "
                                           "font-family: 'Times New Roman';")
 
-        self.milk_filter = QCheckBox("No milk", self)
+        self.milk_filter = QCheckBox("Без молока", self)
         self.milk_filter.setGeometry(QRect(350, 170, 300, 50))  # Координаты и размер
         self.milk_filter.setStyleSheet("font-size: 30px; "
                                        "font-family: 'Times New Roman';")
@@ -236,7 +236,7 @@ class FilterWindow(QWidget):
         # Выпадающий список для категории рецептов
         self.category_filter2 = QComboBox(self)
         self.category_filter2.setGeometry(QRect(50, 50, 250, 70))  # Координаты и размер
-        self.category_filter2.addItems(["All", "breakfast", "lunch", "dinner", "sweets"])
+        self.category_filter2.addItems(["ВСЕ", "Завтрак", "Обед", "Ужин", "Сладкое"])
         self.category_filter2.setStyleSheet("""
                             QComboBox {
                                 font-size: 40px; 
@@ -295,7 +295,7 @@ class StopwatchWindow(QWidget):
         self.layout.addWidget(self.time_label)
 
         # Кнопка Start/Stop
-        self.start_stop_button = QPushButton("Start", self)
+        self.start_stop_button = QPushButton("Старт", self)
         self.start_stop_button.setStyleSheet("background-color: black;"
                                              "color: white;"
                                              "font-size: 20px;")
@@ -303,7 +303,7 @@ class StopwatchWindow(QWidget):
         self.layout.addWidget(self.start_stop_button)
 
         # Кнопка Reset
-        self.reset_button = QPushButton("Reset", self)
+        self.reset_button = QPushButton("Сброс", self)
         self.reset_button.setStyleSheet("font-size: 20px;"
                                         "background-color: black;"
                                         "color: white;")
@@ -322,10 +322,10 @@ class StopwatchWindow(QWidget):
         """Запуск и остановка секундомера"""
         if not self.running:
             self.timer.start(1000)  # Обновляем каждую секунду
-            self.start_stop_button.setText("Stop")
+            self.start_stop_button.setText("Стоп")
         else:
             self.timer.stop()
-            self.start_stop_button.setText("Start")
+            self.start_stop_button.setText("Стоп")
         self.running = not self.running
 
     def reset(self):
@@ -333,7 +333,7 @@ class StopwatchWindow(QWidget):
         self.timer.stop()
         self.time = QTime(0, 0, 0)
         self.time_label.setText(self.time.toString("hh:mm:ss"))
-        self.start_stop_button.setText("Start")
+        self.start_stop_button.setText("Старт")
         self.running = False
 
     def update_timer(self):
