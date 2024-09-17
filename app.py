@@ -39,7 +39,7 @@ class WelcomeWindow(QWidget):
                                       "background-color: black;")
 
         # Кнопка для начала работы
-        self.start_button = QPushButton("Start", self)
+        self.start_button = QPushButton("Старт", self)
         self.start_button.setGeometry(QRect(225, 275, 150, 50))
         self.start_button.setStyleSheet("background-color: black; color: white; font-size: 20px;")
         self.start_button.clicked.connect(self.open_main_window)
@@ -48,7 +48,7 @@ class WelcomeWindow(QWidget):
         """Открытие основного окна и закрытие приветственного"""
         user_name = self.name_input.text()  # Получаем введенное имя пользователя
         if user_name.strip() == "":  # Проверка на пустое имя
-            user_name = "Guest"  # Если имя не введено, используем значение по умолчанию
+            user_name = "Гость"  # Если имя не введено, используем значение по умолчанию
 
         self.main_window = RecipeGenerator(self.app, user_name)  # Передаем имя в главное окно
         self.main_window.show()
@@ -83,7 +83,7 @@ class RecipeGenerator(QWidget):
         #
 
         # Кнопка для генерации рецепта
-        self.generate_button = QPushButton("Generate Recipe", self)
+        self.generate_button = QPushButton("Сгенерировать", self)
         self.generate_button.setGeometry(QRect(350, 620, 300, 70))
         self.generate_button.setStyleSheet("background-color: black;"
                                            "color: white;"
@@ -96,7 +96,7 @@ class RecipeGenerator(QWidget):
         #
 
         # Кнопка для открытия окна фильтров
-        self.filter_button = QPushButton("Filter", self)
+        self.filter_button = QPushButton("Фильтр", self)
         self.filter_button.setGeometry(QRect(50, 620, 250, 70))
         self.filter_button.setStyleSheet("color: black;"
                                          "font-size: 35px;"
@@ -137,7 +137,7 @@ class RecipeGenerator(QWidget):
         #
 
         # Кнопка для открытия окна секундомера
-        self.stopwatch_button = QPushButton("Stopwatch", self)
+        self.stopwatch_button = QPushButton("Секундомер", self)
         self.stopwatch_button.setGeometry(QRect(700, 620, 250, 70))
         self.stopwatch_button.setStyleSheet("color: black;"
                                             "font-size: 35px;"
@@ -149,7 +149,7 @@ class RecipeGenerator(QWidget):
         #
 
         # Устанавливаем начальные значения фильтров
-        self.category_filter = "All"
+        self.category_filter = "ВСЕ"
         self.sugar_filter = False
 
     def filter_recipes(self):
@@ -157,7 +157,7 @@ class RecipeGenerator(QWidget):
         category = self.category_filter
         filtered_recipes = self.recipes
 
-        if category != "All":
+        if category != "ВСЕ":
             filtered_recipes = [recipe for recipe in filtered_recipes if recipe["category"] == category]
 
         if self.sugar_filter:
