@@ -1,63 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Property Tours</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #001f3f;
-            color: #ffffff;
-        }
-        h1 {
-            margin-top: 20px;
-        }
-        form {
-            margin: 20px;
-        }
-        input[type="text"] {
-            padding: 10px;
-            width: 400px;
-            margin-right: 10px;
-        }
-        input[type="submit"] {
-            padding: 10px;
-            cursor: pointer;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .gallery img {
-            max-width: 300px;
-            margin: 10px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body>
-    <h1>Поиск недвижимости</h1>
-    <form method="POST">
-        <input type="text" name="address" placeholder="Введите номер" required>
-        <input type="submit" value="Пуск">
-    </form>
-    <div class="gallery">
-        {% if images %}
-            <h2>Photos for address: {{ address }}</h2>
-            {% for image in images %}
-                <img src="{{ image }}" alt="Property Image">
-            {% endfor %}
-        {% else %}
-            <p>К сожалению, ничего не найдено. Попробуйте ввести другой номер.</p>
-        {% endif %}
-    </div>
-</body>
-</html>
+[
+    {
+        "name": "Pancakes",
+        "category": "breakfast",
+        "ingredients": ["flour", "milk", "egg", "butter"],
+        "instructions": "Mix ingredients and fry on a pan.",
+        "contains_sugar": true,
+        "contains_alcohol": true,
+        "contains_milk": true
+    },
+    {
+        "name": "Scrambled Eggs",
+        "category": "breakfast",
+        "ingredients": ["eggs", "salt", "pepper", "butter"],
+        "instructions": "Whisk the eggs, then fry them in butter while stirring.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": false
+    },
+    {
+        "name": "Rice Porridge",
+        "category": "breakfast",
+        "ingredients": ["rice", "milk", "sugar", "butter"],
+        "instructions": "Cook rice in milk with sugar until tender, then add butter.",
+        "contains_sugar": true,
+        "contains_alcohol": false,
+        "contains_milk": true
+    },
+    {
+        "name": "Cereal with Milk",
+        "category": "breakfast",
+        "ingredients": ["cereal", "milk"],
+        "instructions": "Pour cereal into a bowl and add milk.",
+        "contains_sugar": true,
+        "contains_alcohol": false,
+        "contains_milk": true
+    },
+    {
+        "name": "Sandwich",
+        "category": "breakfast",
+        "ingredients": ["bread", "cheese", "ham", "lettuce", "tomato"],
+        "instructions": "Layer the bread with cheese, ham, lettuce, and tomato, then close the sandwich.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": false
+    },
+    {
+        "name": "Borscht",
+        "category": "lunch",
+        "ingredients": ["beetroot", "cabbage", "potatoes", "carrots", "onion", "tomato paste", "meat"],
+        "instructions": "Boil meat, then add chopped vegetables and cook until tender. Add tomato paste for flavor.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": false
+    },
+    {
+        "name": "Burger",
+        "category": "lunch",
+        "ingredients": ["ground beef", "bun", "lettuce", "tomato", "cheese"],
+        "instructions": "Grill the beef patty, assemble the burger with lettuce, tomato, and cheese in a bun.",
+        "contains_sugar": true,
+        "contains_alcohol": false,
+        "contains_milk": true
+    },
+    {
+        "name": "Spaghetti Bolognese",
+        "category": "lunch",
+        "ingredients": ["spaghetti", "ground beef", "tomato sauce", "onion"],
+        "instructions": "Boil spaghetti. Fry ground beef and mix with tomato sauce.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": true
+    },
+    {
+        "name": "Khinkali",
+        "category": "dinner",
+        "ingredients": ["flour", "water", "salt", "ground beef", "onion", "spices"],
+        "instructions": "Prepare dough, fill with seasoned ground beef, then boil.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": false
+    },
+    {
+        "name": "Steak",
+        "category": "dinner",
+        "ingredients": ["beef steak", "salt", "pepper", "butter"],
+        "instructions": "Season the steak with salt and pepper, then fry in butter until desired doneness.",
+        "contains_sugar": false,
+        "contains_alcohol": true,
+        "contains_milk": false
+    },
+    {
+        "name": "Pizza",
+        "category": "dinner",
+        "ingredients": ["pizza dough", "tomato sauce", "cheese", "pepperoni", "olives"],
+        "instructions": "Spread tomato sauce over the dough, add cheese and toppings, then bake in the oven.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": true
+    },
+    {
+        "name": "Shawarma",
+        "category": "dinner",
+        "ingredients": ["flatbread", "chicken", "tomato", "lettuce", "yogurt sauce"],
+        "instructions": "Grill chicken, place it in flatbread with tomato, lettuce, and sauce, then roll it up.",
+        "contains_sugar": false,
+        "contains_alcohol": false,
+        "contains_milk": false
+    },
+    {
+        "name": "Caesar Salad",
+        "category": "dinner",
+        "ingredients": ["lettuce", "chicken", "parmesan", "croutons", "caesar dressing"],
+        "instructions": "Mix all ingredients and serve fresh.",
+        "contains_sugar": true,
+        "contains_alcohol": false,
+        "contains_milk": false
+    }
+]
