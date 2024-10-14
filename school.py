@@ -80,7 +80,24 @@ def ex_8():
 
                                     kol += 1
                         count = 0
-    print(kol)
+    print(kol) 
+
+def ex_9():
+    f = open('69914.txt')
+    a = []
+    count = 0
+    for i in f:
+        a = [int(j) for j in i.split()]
+        s,p,k = 0,0,0
+        for i in a:   
+            if a.count(i) == 1:
+                s += i
+                k += 1
+            if a.count(i) == 3: p = i
+        if p != 0 and k == 3:
+            if p >= (s/3):
+                count += 1 
+    print(count)
 
 
 def ex_12():
