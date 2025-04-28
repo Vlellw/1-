@@ -16,6 +16,7 @@ def ex_2():
                     print(w, x, y, z, ' ', f_1(x, y, z, w))
 
 
+
 def ex_5():
     w1 = []
     for n in range(100):
@@ -32,6 +33,7 @@ def ex_5():
     print(min(w1))
 
 
+
 def ex_6():
     k = 25
     t.speed = 1000
@@ -45,6 +47,7 @@ def ex_6():
         for y in range(-5, 15):
             t.goto(x * k, y * k)
             t.dot('red')
+
 
 
 def ex_8():
@@ -82,6 +85,8 @@ def ex_8():
                         count = 0
     print(kol) 
 
+
+
 def ex_9():
     f = open('69914.txt')
     a = []
@@ -98,6 +103,7 @@ def ex_9():
             if p >= (s/3):
                 count += 1 
     print(count)
+
 
 
 def ex_12():
@@ -118,6 +124,7 @@ def ex_12():
             break
 
 
+
 def ex_14():
     for i in '0123456789ABCDEFGHI':
         r = int('98897' + i + '21', 19) + int('2' + i + '923', 19)
@@ -131,6 +138,7 @@ def ex_14():
         x //= 25
     s1 = s1[::-1]
     print(s1.count("0"))
+
 
 
 def ex_15():
@@ -151,6 +159,8 @@ def ex_16():
         return n * F(n + 1)
 
     print(F(2022) // F(2024))
+
+
 
 def ex_17():
     f = open('17_2024.txt')
@@ -256,3 +266,35 @@ print("====")
 for x in range(10, 100):
     if ex_21b(x, 10, 1) == 1:
         print("Задача 21: ", x)
+
+
+
+def ex_27():
+    with open('27Б.txt') as f:
+    f.readline()
+    w1, w2, w3 = [], [], []
+    for i in f:
+        x, y = list(map(float, i.replace(',', '.').split()))
+        if y > 1.6:
+            w1.append((x, y))
+        elif x < 7 and y < 1.6:
+            w2.append((x, y))
+        else:
+            w3.append((x, y))
+    def cluster(w):
+        x1, y1 = 0, 0
+        minn = 10**10
+        for i in w:
+            d = 0
+            for j in w:
+                d += ((i[0] - j[0])**2 + (i[1] - j[1])**2)**0.5
+            if d < minn:
+                minn = d
+                x1, y1 = i[0], i[1]
+        return x1, y1
+    x1, y1 = cluster(w1)
+    x2, y2 = cluster(w2)
+    x3, y3 = cluster(w3)
+    print((x1 + x2 + x3)/3 * 10000, (y1 + y2 + y3)/3 * 10000)
+
+
