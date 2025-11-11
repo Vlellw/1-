@@ -315,4 +315,5 @@ class Register_for_uni:
         return None
 
 
-Register_for_uni()
+if __name__ == "__main__":
+    Register_for_uni()
