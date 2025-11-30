@@ -9,32 +9,33 @@ class Register_for_uni:
         self.display_menu()
 
     def display_menu(self):
-        # function that displays menu
-        print(f'You may select one of the following:\n'
-              f'                1) Add student\n'
-              f'                2) Search student\n'
-              f'                3) Search course\n'
-              f'                4) Add course completion\n'
-              f"                5) Show student's record\n"
-              f'                0) Exit\n'
-              f'What is your selection?')
-        s1 = input()  # user enters his selection
-        if s1 == '1':
-            self.add_student()
-        elif s1 == '2':
-            self.search_student()
-        elif s1 == '3':
-            self.search_course()
-        elif s1 == '4':
-            self.add_course_completion()
-        elif s1 == '5':
-            self.show_students_record()
-        elif s1 == '0':
-            self.exit()
-        else:
-            # if smth else was entered by the user
-            print('Please enter a number between 0 and 5')
-            self.display_menu()
+        while True:
+            print()
+            # function that displays menu
+            print(f'You may select one of the following:\n'
+                  f'                1) Add student\n'
+                  f'                2) Search student\n'
+                  f'                3) Search course\n'
+                  f'                4) Add course completion\n'
+                  f"                5) Show student's record\n"
+                  f'                0) Exit\n'
+                  f'What is your selection?')
+            s1 = input()  # user enters his selection
+            if s1 == '1':
+                self.add_student()
+            elif s1 == '2':
+                self.search_student()
+            elif s1 == '3':
+                self.search_course()
+            elif s1 == '4':
+                self.add_course_completion()
+            elif s1 == '5':
+                self.show_students_record()
+            elif s1 == '0':
+                break
+            else:
+                # if smth else was entered by the user
+                print('Please enter a number between 0 and 5')
 
     def add_student(self):
         # function that adds student to the student.txt
@@ -59,12 +60,15 @@ class Register_for_uni:
         count = 1  # number of current question
         while count <= len(q1):
             r = input(q1[count] + '\n')
-            if self.check_of_input_student(r, count):
+            check = self.check_of_input_student(r, count)
+            if check == 1:
                 w1.append(r)
                 count += 1
-            else:
+            elif check == 0:
                 print(f'Names should contain only letters and '
                       f'start with capital letter.')
+            else:
+                print(f'Please enter the exact abbreviation of the major')
 
         w1.insert(4, w1[2].lower() + '.' + w1[1].lower() + '@lut.fi')  # adding students email
 
@@ -73,63 +77,80 @@ class Register_for_uni:
         w1.insert(5, year_today)
 
         f1 = open('students.txt', 'a')
-        f1.write(','.join(w1) + '\n')  # writing the resulted data to the student.txt
+        result = ''
+        for i in w1: result = result + ',' + i
+        f1.write(result[1::] + '\n')  # writing the resulted data to the student.txt
+        # result[1::] starts with the 1st element, because string "result" starts with ,
         f1.close()
-
-        self.display_menu()
+        print(f'Student added successfully!')
 
     def search_student(self):
-        r = input('Give at least 3 charecters of the '
-                  'students first, middle or last name:\n').lower()
+        while True:
+            r = input('Give at least 3 charecters of the '
+                      'students first, middle or last name:\n').lower()
 
-        if (len(r) < 3) or (not r.isalpha()):
-            print('Error!!!')                   # checking if correct input was given
-            self.search_student()
+            if (len(r) < 3) or (not r.isalpha()):
+                print('Error!!!\n'
+                      'Please check that at least three characters were entered correctly.\n')  # checking if correct input was given
 
-        f1 = open('students.txt').readlines()
-        matching_is_printed = False  # False if "Matching students:" is not printed yet / True if "Matching
-        # students:" has been already printed
+            else:
+                f1 = open('students.txt').readlines()
+                matching_is_printed = False  # False if "Matching students:" is not printed yet / True if "Matching
+                # students:" has been already printed
 
-        found_matching = False  # False if nothing was printed / True if matching was find
+                found_matching = False  # False if nothing was printed / True if matching was find
 
-        for i in f1:
-            student_info = i.split(',')
+                for i in f1:
+                    student_info = i.split(',')
 
-            if (r in student_info[1].lower()) or (r in student_info[2].lower()) or (r in student_info[3].lower()):
-                found_matching = True
-                if matching_is_printed is False:
-                    print('Matching students:')
-                    matching_is_printed = True
+                    if (r in student_info[1].lower()) or (r in student_info[2].lower()) or (r in student_info[3].lower()):
+                        found_matching = True
 
-                print(f'ID: {student_info[0]}, {student_info[1]}, '
-                      f'{student_info[2]} {student_info[3]}')
+                        if matching_is_printed == False:
+                            print('Matching students:')
+                            matching_is_printed = True
 
-        if not found_matching: print('No matching students.')
+                        print(f'ID: {student_info[0]}, {student_info[1]}, '
+                              f'{student_info[2]} {student_info[3]}')
 
-        self.display_menu()
+                if not found_matching:
+                    print('No matching students.')
+                    break
+                break
 
     def search_course(self):
-        r = input('Give at least 3 characters of the '
-                  'course or the teacher:\n').lower()
+        while True:
+            r = input('Give at least 3 characters of the '
+                      'course or the teacher:\n').lower()
 
-        if (len(r) < 3) or (not r.isalpha()):
-            print('Error!!!')                   # checking if correct input was given
-            self.search_course()
+            if (len(r) < 3) or (not r.isalpha()):
+                print('Error!!!\n'
+                      'Please check that at least three characters were entered correctly.\n')  # checking if correct input was given
+            else:
+                f1 = open('courses.txt').readlines()
+                course_found = False
 
-        f1 = open('courses.txt').readlines()
+                for i in f1:
+                    course_info = i.strip().split(',')
 
-        for i in f1:
-            course_info = i.strip().split(',')
+                    for x in range(1, len(course_info)):  # loop starts with 1 because it doesn't search the matches in course ID
+                        if x != 2:   # also doesn't search the matches among credits
+                            if r in course_info[x].lower():
+                                course_found = True                     # checking for the matching course
 
-            for x in range(1, len(course_info)):
-                if x != 2:
-                    if r in course_info[x].lower():
-                        print(f'ID: {course_info[0]}, Name: {course_info[1]}, '
-                              f'Teacher (s): {", ".join(course_info[3::])}')
+                                result = ''
+                                for i in course_info[3::]:
+                                    result = result + ', ' + i
 
-        self.display_menu()
+                                print(f'ID: {course_info[0]}, Name: {course_info[1]}, '
+                                      f'Teacher (s): {result[2::]}')
 
-    def add_course_completion(self):
+                if course_found == False:
+                    print('No matching courses.')  # if no courses were found
+                else:
+                    break
+
+    def add_course_completion(self, match=False):
         q1 = {
             1: 'Give the course ID:',
             2: 'Give the student ID:',
@@ -140,19 +161,26 @@ class Register_for_uni:
         w1 = []  # list where the results of questions will be stored
 
         count = 1  # number of current question
-        while count <= len(q1):
-            r = input(q1[count] + '\n')
-            if self.check_of_input_course(r, count):
-                if count == 4:
-                    w1.insert(2, r)
-                else: w1.append(r)
-                count += 1
 
-        f1 = open('passed.txt', 'a')
-        f1.write(','.join(w1) + '\n')  # writing the resulted data to the passed.txt
-        f1.close()
-        print('Record added!')
-        self.display_menu()
+        while count <= len(q1):
+
+            r = input(q1[count] + '\n')    # current question that should be asked
+            check = self.check_of_input_course(r, count)
+            match = False
+            if check == 1:
+
+                if count == 4:
+                    w1.insert(2, r)   # date should added not in the last, but on the 2nd position of the list
+                else:
+                    w1.append(r)
+                count += 1
+            elif check == 2:
+                match = True
+                break
+
+        if match == False:
+            self.retaking_course(w1)   # checking if the course was taken earlier
+
 
     def show_students_record(self):
         q1 = {
@@ -170,6 +198,14 @@ class Register_for_uni:
             ['Teacher (s):', ''],
             ['grade:', 0]
         ]
+        list_of_majors = [
+            ('CE', 'Computational Engineering'),
+            ('EE', 'Electrical Engineering'),
+            ('ET', 'Energy Technology'),
+            ('ME', 'Mechanical Engineering'),
+            ('SE', 'Software Engineering')
+        ]
+
         r = input('Give the student ID:\n')
         print()
         f1 = open('students.txt').readlines()
@@ -186,11 +222,6 @@ class Register_for_uni:
                       f'{student_info[2]} {student_info[3]}')
                 print(f'{q1[3]} {student_info[5]}')
 
-                list_of_majors = [('CE', 'Computational Engineering'),
-                                  ('EE', 'Electrical Engineering'),
-                                  ('ET', 'Energy Technology'),
-                                  ('ME', 'Mechanical Engineering'),
-                                  ('SE', 'Software Engineering')]
                 for x in range(4):
                     if student_info[6] == list_of_majors[x][0]:
                         print(f'{q1[4]} {list_of_majors[x][1]}')
@@ -199,9 +230,9 @@ class Register_for_uni:
                 print(f'{q1[5]} {student_info[4]}')
                 break
 
-        if found_student is False:
+        if found_student == False:
             print('Student not found. Try again.')
-            self.display_menu()
+            return
 
         try:
             print('\nPassed courses:\n')
@@ -239,15 +270,17 @@ class Register_for_uni:
 
                     q2[0][1] = passed_info[0]
                     q2[3][1] = passed_info[2]
+
+                    result = ''
+                    for i in teacher: result = result + ', ' + i
+
                     print(f'{q2[0][0]} {q2[0][1]}, {q2[1][0]} {q2[1][1]}, '
                           f'{q2[2][0]} {q2[2][1]}\n{q2[3][0]} {q2[3][1]}, '
-                          f'{q2[4][0]} {", ".join(teacher)}, {q2[5][0]} {passed_info[-1]}\n')
+                          f'{q2[4][0]} {result[2::]}, {q2[5][0]} {passed_info[-1]}\n')
             print(f'Total credits: {total_credits}, average grade: {round(grade / kol_of_courses, 2)}')
-            self.display_menu()
 
         except:
             print("None of them are found.\n")
-            self.display_menu()
 
     def generating_student_id(self):
         # function that generates student's ID
@@ -266,22 +299,22 @@ class Register_for_uni:
             f1 = open('courses.txt').readlines()
             for i in f1:
                 if r == i[:5]:
-                    return True
-            # print('Invalid course ID')
-            return False
+                    return 1
+            print('Invalid course ID')
+            return 0
         elif count == 2:
             f1 = open('students.txt').readlines()
             for i in f1:
                 if r.lower() == i[:5]:
-                    return True
+                    return 1
             print('Student not found. Try again.')
-            return False
+            return 0
         elif count == 3:
             if r.isdigit():
                 if 0 < int(r) < 6:
-                    return True
+                    return 1
                 print('Grade is not a correct grade.')
-                return False
+                return 0
         elif count == 4:
             try:
                 user_date = datetime.strptime(r, "%Y-%m-%d").date()
@@ -289,12 +322,12 @@ class Register_for_uni:
                 thirty_days_ago = today - timedelta(days=30)
                 if user_date < thirty_days_ago:
                     print('Input date is older than 30 days. Contact "opinto"')
-                    self.display_menu()
+                    return 2
                 elif user_date > today:
                     print('Input date is later than today. Try again!')
-                    return False
+                    return 0
                 print('Input date is valid.')
-                return True
+                return 1
 
             except ValueError:
                 print('Invalid date format. Use YYYY-MM-DD. Try again!')
@@ -303,17 +336,80 @@ class Register_for_uni:
         # function that checks if the user's inputted data for adding student was correct
         list_of_majors = ['CE', 'EE', 'ET', 'ME', 'SE']
         if count == 3 and len(r) == 0:
-            return True
+            return 1
         if count == 4:
             if r not in list_of_majors:
-                return False
+                return 2
         if r.isalpha() and r[0].isupper():
-            return True
-        return False
+            return 1
+        return 0
 
-    def exit(self):
-        return None
+    def retaking_course(self, w1):
+
+        w2 = []
+        new_data = True
+        early_date = False
+        f = open('passed.txt').readlines()
+
+        for i in f:
+            line = i.strip().split(',')
+
+            if w1[0] == line[0] and w1[1] == line[1] and early_date == False:
+
+                if int(w1[3]) > int(line[3]) and early_date == False:
+                    # checking if the student got better grade
+                    new_data = False
+
+                    if w1[2] >= line[2]:  # checking if the retaken course has latter date
+                        line[2], line[3] = w1[2], w1[3]
+                        # list(line) changes its values to the more late date and better grade
+
+                        result = ''
+                        for x in line: result = result + ',' + x
+
+                        w2.append((result[1::] + '\n'))
+
+                    else:
+                        print(f'However the same course, but taken later has been found! '
+                              f'The date of last attempt - {line[2]}!')
+                        w2.append(i)
+                        early_date = True
+
+                        # s1 = input(f'Press ENTER to return to the main lobby / '
+                        #            f'Write anything else to try one more time')
+                        # if s1 == '':
+                        #     return
+                        # else:
+                        #     self.add_course_completion(True)
+                else:
+                    new_data = False
+                    w2.append(i)
+
+            else:
+                w2.append(i)
+
+        if new_data == True:
+            result = ''
+            for i in w1: result = result + ',' + i
+            w2.append((result[1::] + '\n'))
+
+        f1 = open('passed.txt', 'w')
+        for i in w2:
+            f1.write(i)
+        f1.close()
+        if early_date == False:
+            print('Record added!')
 
 
 if __name__ == "__main__":
     Register_for_uni()
+
+
+
+# instead of this algorithm:
+# result = ''
+# for i in w1: result = result + ',' + i
+# everywhere could be used:
+# ','.join(w1)     but Code Grade marks it as untaught structure.
+
+
